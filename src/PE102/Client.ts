@@ -8,9 +8,9 @@ export class Client {
   /**
    * The client that sends the command
    * @type {net.Socket}
-   * @private
+   * @public
    */
-  private client: net.Socket
+  public client: net.Socket
 
   /**
    * Creates a new client.

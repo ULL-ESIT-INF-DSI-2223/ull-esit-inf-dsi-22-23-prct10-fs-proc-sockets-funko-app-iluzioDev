@@ -8,9 +8,9 @@ export class Server {
   /**
    * The server that listens for incoming connections.
    * @type {net.Server}
-   * @private
+   * @public
    */
-  private server: net.Server
+  public server: net.Server
 
   /**
    * Creates a new server that listens on an specified port.
