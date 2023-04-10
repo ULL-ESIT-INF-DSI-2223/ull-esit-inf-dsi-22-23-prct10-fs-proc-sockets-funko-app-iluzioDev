@@ -21,18 +21,15 @@ export class Server {
     this.server = net
       .createServer((connection) => {
         console.log('Client connected')
+        
         connection.on('data', (data) => {
           console.log('Received data from client')
           console.log(data.toString())
-          try {
-            const file = JSON.parse(data.toString())
-            this.execute(
-              file.command + ' ' + file.arguments.join(' '),
-              connection
-            )
-          } catch (error) {
-            console.error(error)
-          }
+          const file = JSON.parse(data.toString())
+          this.execute(
+            file.command + ' ' + file.arguments.join(' '),
+            connection
+          )
         })
         connection.on('close', () => {
           console.log('Client closed connection')
