@@ -12,7 +12,50 @@
 <div class="col-8 col-content">
 <div class="tsd-page-title">
 <h2>prct10</h2></div>
-<div class="tsd-panel tsd-typography"><p><a href="https://classroom.github.com/a/NApXvVde"><img src="https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg" alt="Review Assignment Due Date"></a></p>
+<div class="tsd-panel tsd-typography">
+<a href="#práctica-10---apis-asíncronas-de-gestión-del-sistema-de-ficheros-creación-de-procesos-y-creación-de-sockets-de-nodejs" id="práctica-10---apis-asíncronas-de-gestión-del-sistema-de-ficheros-creación-de-procesos-y-creación-de-sockets-de-nodejs" style="color: inherit; text-decoration: none;">
+  <h1>Práctica 10 - APIs asíncronas de gestión del sistema de ficheros, creación de procesos y creación de sockets de Node.js</h1>
+</a>
+<p>Durante esta práctica se realizarán ejercicios relacionados con el uso de las APIs asíncronas de gestión del sistema de ficheros, creación de procesos y creación de sockets de Node.js.</p>
+
+<a href="#tareas-previas" id="tareas-previas" style="color: inherit; text-decoration: none;">
+  <h2>Tareas Previas</h2>
+</a>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> Aceptar la <a href="https://classroom.github.com/a/NApXvVde">asignación</a> de la práctica en Github Classroom.</li>
+<li>[] Familiarizarse con la clase <code>EventEmitter</code> de Node.js, del módulo <code>events</code>.</li>
+<li><input checked="" disabled="" type="checkbox"> Familiarizarse con el módulo <code>fs</code> de Node.js.</li>
+<li>[] Familiarizarse con el módulo <code>child_process</code> de Node.js.</li>
+<li>[] Familiarizarse con el módulo <code>net</code> de Node.js.</li>
+<li><input checked="" disabled="" type="checkbox"> Repasar los paquetes <code>yargs</code> y <code>chalk</code> que habíamos utilizado en la práctica anterior.</li>
+</ul>
+
+<a href="#ejercicio-1" id="ejercicio-1" style="color: inherit; text-decoration: none;">
+  <h2>Ejercicio 1</h2>
+</a>
+<p>Considerando el siguiente ejemplo de uso de la API asíncrona de gestión del sistema de ficheros de Node.js:</p>
+<pre><code class="language-typescript"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">access</span><span class="hl-1">, </span><span class="hl-2">constants</span><span class="hl-1">, </span><span class="hl-2">watch</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;fs&#39;</span><br/><br/><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">process</span><span class="hl-1">.</span><span class="hl-2">argv</span><span class="hl-1">.</span><span class="hl-2">length</span><span class="hl-1"> !== </span><span class="hl-4">3</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-3">&#39;Please, specify a file&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">} </span><span class="hl-0">else</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">filename</span><span class="hl-1"> = </span><span class="hl-2">process</span><span class="hl-1">.</span><span class="hl-2">argv</span><span class="hl-1">[</span><span class="hl-4">2</span><span class="hl-1">]</span><br/><br/><span class="hl-1">  </span><span class="hl-5">access</span><span class="hl-1">(</span><span class="hl-2">filename</span><span class="hl-1">, </span><span class="hl-2">constants</span><span class="hl-1">.</span><span class="hl-7">F_OK</span><span class="hl-1">, (</span><span class="hl-2">err</span><span class="hl-1">) </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">err</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-3">`File </span><span class="hl-6">${</span><span class="hl-2">filename</span><span class="hl-6">}</span><span class="hl-3"> does not exist`</span><span class="hl-1">)</span><br/><span class="hl-1">    } </span><span class="hl-0">else</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-3">`Starting to watch file </span><span class="hl-6">${</span><span class="hl-2">filename</span><span class="hl-6">}</span><span class="hl-3">`</span><span class="hl-1">)</span><br/><br/><span class="hl-1">      </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">watcher</span><span class="hl-1"> = </span><span class="hl-5">watch</span><span class="hl-1">(</span><span class="hl-2">process</span><span class="hl-1">.</span><span class="hl-2">argv</span><span class="hl-1">[</span><span class="hl-4">2</span><span class="hl-1">])</span><br/><br/><span class="hl-1">      </span><span class="hl-2">watcher</span><span class="hl-1">.</span><span class="hl-5">on</span><span class="hl-1">(</span><span class="hl-3">&#39;change&#39;</span><span class="hl-1">, () </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-3">`File </span><span class="hl-6">${</span><span class="hl-2">filename</span><span class="hl-6">}</span><span class="hl-3"> has been modified somehow`</span><span class="hl-1">)</span><br/><span class="hl-1">      })</span><br/><br/><span class="hl-1">      </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-3">`File </span><span class="hl-6">${</span><span class="hl-2">filename</span><span class="hl-6">}</span><span class="hl-3"> is no longer watched`</span><span class="hl-1">)</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  })</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p>Realizar una traza de ejecución mostrando, paso a paso, el contenido de la pila de llamadas, el registro de eventos de la API y la cola de manejadores, además de lo que se muestra por la consola.</p>
+<ul>
+<li>¿Qué hace la función <code>access</code>?</li>
+<li>¿Para qué sirve el objeto <code>constants</code>?</li>
+</ul>
+
+<a href="#ejercicio-2" id="ejercicio-2" style="color: inherit; text-decoration: none;">
+  <h2>Ejercicio 2</h2>
+</a>
+
+<a href="#pe120" id="pe120" style="color: inherit; text-decoration: none;">
+  <h2>PE120</h2>
+</a>
+<p>Desarrollar un cliente y un servidor en Node.js, haciendo uso de sockets, que incorporen la siguiente funcionalidad:</p>
+<ul>
+<li><p>El cliente debe recibir, desde la línea de comandos, un comando Unix/Linux, además de sus argumentos correspondientes, que ejecutaremos en el servidor.</p>
+</li>
+<li><p>El servidor debe recibir la petición del cliente, procesarla, esto es, ejecutar el comando solicitado, y devolver la respuesta del comando al cliente. Para ello, piense que el comando solicitado puede haberse ejecutado correctamente o puede haber fallado, por ejemplo, por no existir o porque se le han pasado unos argumentos no válidos.</p>
+</li>
+</ul>
 </div></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
@@ -35,12 +78,14 @@
 <ul>
 <li class="current selected"><a href="modules.html">prct10</a>
 <ul>
-<li class="tsd-kind-module"><a href="modules/Funko_BasicFunkoPop.html">Funko/<wbr/>Basic<wbr/>Funko<wbr/>Pop</a></li>
-<li class="tsd-kind-module"><a href="modules/Funko_FunkoGenre.html">Funko/<wbr/>Funko<wbr/>Genre</a></li>
-<li class="tsd-kind-module"><a href="modules/Funko_FunkoPop.html">Funko/<wbr/>Funko<wbr/>Pop</a></li>
-<li class="tsd-kind-module"><a href="modules/Funko_FunkoType.html">Funko/<wbr/>Funko<wbr/>Type</a></li>
-<li class="tsd-kind-module"><a href="modules/User_User.html">User/<wbr/>User</a></li>
-<li class="tsd-kind-module"><a href="modules/main.html">main</a></li></ul></li></ul></div></details></nav></div></div>
+<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_BasicFunkoPop.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Basic<wbr/>Funko<wbr/>Pop</a></li>
+<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_FunkoGenre.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Genre</a></li>
+<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_FunkoPop.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Pop</a></li>
+<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_FunkoType.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Type</a></li>
+<li class="tsd-kind-module"><a href="modules/FunkoApp_User_User.html">Funko<wbr/>App/<wbr/>User/<wbr/>User</a></li>
+<li class="tsd-kind-module"><a href="modules/FunkoApp_main.html">Funko<wbr/>App/main</a></li>
+<li class="tsd-kind-module"><a href="modules/PE102_Client.html">PE102/<wbr/>Client</a></li>
+<li class="tsd-kind-module"><a href="modules/PE102_Server.html">PE102/<wbr/>Server</a></li></ul></li></ul></div></details></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="assets/main.js"></script></body></html>
