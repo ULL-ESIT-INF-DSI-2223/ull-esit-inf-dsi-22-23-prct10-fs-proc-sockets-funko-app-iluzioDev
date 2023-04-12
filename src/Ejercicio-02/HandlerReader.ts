@@ -7,7 +7,7 @@ import { BasicReader } from './BasicReader.js'
 export class HandlerReader extends BasicReader {
   /**
    * Initializes the path of the file to read.
-   * @param path 
+   * @param path
    */
   public constructor(protected path: string) {
     super(path)

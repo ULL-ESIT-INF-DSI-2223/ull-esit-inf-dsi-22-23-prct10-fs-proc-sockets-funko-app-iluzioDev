@@ -21,7 +21,7 @@ export class Server {
     this.server = net
       .createServer((connection) => {
         console.log('Client connected')
-        
+
         connection.on('data', (data) => {
           console.log('Received data from client')
           console.log(data.toString())

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { spawn } from 'child_process';
+import { spawn } from 'child_process'
 import { BasicReader } from './BasicReader.js'
 
 /**
@@ -8,7 +8,7 @@ import { BasicReader } from './BasicReader.js'
 export class PipeReader extends BasicReader {
   /**
    * Initializes the path of the file to read.
-   * @param path 
+   * @param path
    */
   public constructor(protected path: string) {
     super(path)

@@ -36,7 +36,7 @@ describe('PipeReader class tests', () => {
       expect(c).to.be.equal(undefined)
     })
   })
-});
+})
 
 describe('HandlerReader class tests', () => {
   const read = new HandlerReader('.gitignore')
@@ -70,4 +70,4 @@ describe('HandlerReader class tests', () => {
       expect(c).to.be.equal(undefined)
     })
   })
-});
+})

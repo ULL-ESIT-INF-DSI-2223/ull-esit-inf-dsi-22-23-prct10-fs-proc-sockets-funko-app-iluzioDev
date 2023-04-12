@@ -10,13 +10,15 @@ export abstract class BasicReader {
   /**
    * Method to read the number of lines of the file.
    */
-  public abstract lines : (callback: (data: number | undefined) => void) => void;
+  public abstract lines: (callback: (data: number | undefined) => void) => void
   /**
    * Method to read the number of words of the file.
    */
-  public abstract words : (callback: (data: number | undefined) => void) => void;
+  public abstract words: (callback: (data: number | undefined) => void) => void
   /**
    * Method to read the number of characters of the file.
    */
-  public abstract characters : (callback: (data: number | undefined) => void) => void;
+  public abstract characters: (
+    callback: (data: number | undefined) => void
+  ) => void
 }

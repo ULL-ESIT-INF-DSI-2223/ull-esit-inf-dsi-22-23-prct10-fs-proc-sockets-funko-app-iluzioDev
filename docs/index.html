@@ -16,6 +16,7 @@
 <a href="#práctica-10---apis-asíncronas-de-gestión-del-sistema-de-ficheros-creación-de-procesos-y-creación-de-sockets-de-nodejs" id="práctica-10---apis-asíncronas-de-gestión-del-sistema-de-ficheros-creación-de-procesos-y-creación-de-sockets-de-nodejs" style="color: inherit; text-decoration: none;">
   <h1>Práctica 10 - APIs asíncronas de gestión del sistema de ficheros, creación de procesos y creación de sockets de Node.js</h1>
 </a>
+<p><a href="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/node.js.yml"><img src="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/node.js.yml/badge.svg" alt="Node.js CI"></a> <a href="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/coveralls.yml"><img src="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/coveralls.yml/badge.svg" alt="Coveralls"></a> <a href="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/sonarcloud.yml"><img src="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/sonarcloud.yml/badge.svg" alt="Sonar-Cloud"></a> <a href="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct10-fs-proc-sockets-funko-app-iluzioDev/actions/workflows/pages/pages-build-deployment/badge.svg" alt="pages-build-deployment"></a></p>
 <p>Durante esta práctica se realizarán ejercicios relacionados con el uso de las APIs asíncronas de gestión del sistema de ficheros, creación de procesos y creación de sockets de Node.js.</p>
 
 <a href="#tareas-previas" id="tareas-previas" style="color: inherit; text-decoration: none;">
@@ -45,6 +46,12 @@
 <a href="#ejercicio-2" id="ejercicio-2" style="color: inherit; text-decoration: none;">
   <h2>Ejercicio 2</h2>
 </a>
+<p>Desarrollar una aplicación que proporcione información sobre el número de líneas, palabras o caracteres que contiene un fichero de texto. La ruta donde se encuentra el fichero deberá ser un parámetro pasado a la aplicación desde la línea de comandos. Adicionalmente, también deberá indicarle al programa desde la línea de comandos si desea visualizar el número de líneas, palabras, caracteres o combinaciones de ellas.</p>
+<p>Llevar a cabo el ejercicio anterior de dos maneras diferentes:</p>
+<ul>
+<li>Haciendo uso del método pipe de un Stream para poder redirigir la salida de un comando hacia otro.</li>
+<li>Sin hacer uso del método pipe, solamente creando los subprocesos necesarios y registrando manejadores a aquellos eventos necesarios para implementar la funcionalidad solicitada.</li>
+</ul>
 
 <a href="#pe120" id="pe120" style="color: inherit; text-decoration: none;">
   <h2>PE120</h2>
@@ -78,14 +85,19 @@
 <ul>
 <li class="current selected"><a href="modules.html">prct10</a>
 <ul>
-<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_BasicFunkoPop.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Basic<wbr/>Funko<wbr/>Pop</a></li>
-<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_FunkoGenre.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Genre</a></li>
-<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_FunkoPop.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Pop</a></li>
-<li class="tsd-kind-module"><a href="modules/FunkoApp_Funko_FunkoType.html">Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Type</a></li>
-<li class="tsd-kind-module"><a href="modules/FunkoApp_User_User.html">Funko<wbr/>App/<wbr/>User/<wbr/>User</a></li>
-<li class="tsd-kind-module"><a href="modules/FunkoApp_main.html">Funko<wbr/>App/main</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_02_BasicReader.html">Ejercicio-<wbr/>02/<wbr/>Basic<wbr/>Reader</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_02_HandlerReader.html">Ejercicio-<wbr/>02/<wbr/>Handler<wbr/>Reader</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_02_PipeReader.html">Ejercicio-<wbr/>02/<wbr/>Pipe<wbr/>Reader</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_02_main.html">Ejercicio-<wbr/>02/main</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_BasicFunkoPop.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Basic<wbr/>Funko<wbr/>Pop</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_FunkoGenre.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Genre</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_FunkoPop.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Pop</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_FunkoType.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Type</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_User_User.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>User/<wbr/>User</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_main.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/main</a></li>
 <li class="tsd-kind-module"><a href="modules/PE102_Client.html">PE102/<wbr/>Client</a></li>
-<li class="tsd-kind-module"><a href="modules/PE102_Server.html">PE102/<wbr/>Server</a></li></ul></li></ul></div></details></nav></div></div>
+<li class="tsd-kind-module"><a href="modules/PE102_Server.html">PE102/<wbr/>Server</a></li>
+<li class="tsd-kind-module"><a href="modules/ejercicio_01.html">ejercicio-<wbr/>01</a></li></ul></li></ul></div></details></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="assets/main.js"></script></body></html>
