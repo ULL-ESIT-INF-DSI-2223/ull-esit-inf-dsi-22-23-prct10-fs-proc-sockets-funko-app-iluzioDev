@@ -50,6 +50,13 @@ Realizar una traza de ejecución mostrando, paso a paso, el contenido de la pila
 
 ## Ejercicio 2
 
+Desarrollar una aplicación que proporcione información sobre el número de líneas, palabras o caracteres que contiene un fichero de texto. La ruta donde se encuentra el fichero deberá ser un parámetro pasado a la aplicación desde la línea de comandos. Adicionalmente, también deberá indicarle al programa desde la línea de comandos si desea visualizar el número de líneas, palabras, caracteres o combinaciones de ellas.
+
+Llevar a cabo el ejercicio anterior de dos maneras diferentes:
+
+- Haciendo uso del método pipe de un Stream para poder redirigir la salida de un comando hacia otro.
+- Sin hacer uso del método pipe, solamente creando los subprocesos necesarios y registrando manejadores a aquellos eventos necesarios para implementar la funcionalidad solicitada.
+
 ## PE120
 
 Desarrollar un cliente y un servidor en Node.js, haciendo uso de sockets, que incorporen la siguiente funcionalidad:

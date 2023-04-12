@@ -3,11 +3,11 @@ import { expect } from 'chai'
 
 import chalk from 'chalk'
 
-import { FunkoType } from '../../src/FunkoApp/Funko/FunkoType.js'
-import { FunkoGenre } from '../../src/FunkoApp/Funko/FunkoGenre.js'
-import { FunkoPop } from '../../src/FunkoApp/Funko/FunkoPop.js'
+import { FunkoType } from '../../src/Ejercicio-03-FunkoApp/Funko/FunkoType.js'
+import { FunkoGenre } from '../../src/Ejercicio-03-FunkoApp/Funko/FunkoGenre.js'
+import { FunkoPop } from '../../src/Ejercicio-03-FunkoApp/Funko/FunkoPop.js'
 
-import { User } from '../../src/FunkoApp/User/User.js'
+import { User } from '../../src/Ejercicio-03-FunkoApp/User/User.js'
 
 const Oswald_The_Lucky_Rabbit = new FunkoPop(
   0,

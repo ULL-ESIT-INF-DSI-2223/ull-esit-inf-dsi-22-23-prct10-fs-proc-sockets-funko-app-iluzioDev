@@ -1,9 +1,9 @@
 import 'mocha'
 import { expect } from 'chai'
 
-import { FunkoType } from '../../src/FunkoApp/Funko/FunkoType.js'
-import { FunkoGenre } from '../../src/FunkoApp/Funko/FunkoGenre.js'
-import { FunkoPop } from '../../src/FunkoApp/Funko/FunkoPop.js'
+import { FunkoType } from '../../src/Ejercicio-03-FunkoApp/Funko/FunkoType.js'
+import { FunkoGenre } from '../../src/Ejercicio-03-FunkoApp/Funko/FunkoGenre.js'
+import { FunkoPop } from '../../src/Ejercicio-03-FunkoApp/Funko/FunkoPop.js'
 
 const Oswald_The_Lucky_Rabbit = new FunkoPop(
   0,
