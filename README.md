@@ -46,90 +46,22 @@ if (process.argv.length !== 3) {
 Realizar una traza de ejecución mostrando, paso a paso, el contenido de la pila de llamadas, el registro de eventos de la API y la cola de manejadores, además de lo que se muestra por la consola.
 
 - ¿Qué hace la función `access`?
+
+Consiste en una función asíncrona que comprueba los permisos de acceso a un archivo o directorio. En este caso se comprueba si el archivo existe.
+
 - ¿Para qué sirve el objeto `constants`?
 
-### Traza de Ejecución
+Es una constante del paquete `fs` que determina si el fichero es accesible para lectura, escritura o ejecución, es decir, si el fichero existe.
 
-**Pila de Llamadas:** Iniciar el programa: test.ts
+### Ejecución
 
-**Registro de eventos de la API:** ninguna actividad
-
-**Cola de manejadores:** 
-
-ninguna actividad
-La función global del archivo comprueba si se proporcionó un argumento válido y, en caso contrario, imprime un mensaje de error en la consola y sale del programa. Como el argumento es válido, el código continúa ejecutando.
-Pila de llamadas:
-
-global function
-Registro de eventos de la API:
-
-ninguna actividad
-Cola de manejadores:
-
-ninguna actividad
-La función global del archivo llama a fs.access() para comprobar si el archivo especificado existe. Se agrega una nueva entrada a la pila de llamadas para la llamada a fs.access().
-Pila de llamadas:
-
-fs.access()
-global function
-Registro de eventos de la API:
-
-ninguna actividad
-Cola de manejadores:
-
-ninguna actividad
-La función fs.access() devuelve null en la función de devolución de llamada, lo que indica que el archivo existe. La función de devolución de llamada se ejecuta sin errores. El código continúa ejecutando.
-Después de que se maneje el resultado de fs.access(), la pila de llamadas se deshace de la entrada para fs.access().
-
-Pila de llamadas:
-
-global function
-Registro de eventos de la API:
-
-ninguna actividad
-Cola de manejadores:
-
-ninguna actividad
-La función global del archivo llama a fs.watch() para crear un objeto de vigilancia para el archivo especificado. Se agrega una nueva entrada a la pila de llamadas para la llamada a fs.watch().
-Pila de llamadas:
-
-fs.watch()
-global function
-Registro de eventos de la API:
-
-ninguna actividad
-Cola de manejadores:
-
-ninguna actividad
-La función fs.watch() devuelve un objeto de vigilancia para el archivo especificado. El objeto de vigilancia se usa para detectar cambios en el archivo. La función de devolución de llamada para la detección de cambios se registra con el objeto de vigilancia.
-Después de que se cree el objeto de vigilancia, la pila de llamadas se deshace de la entrada para fs.watch().
-
-Pila de llamadas:
-
-global function
-Registro de eventos de la API:
-
-ninguna actividad
-Cola de manejadores:
-
-ninguna actividad
-Se imprime un mensaje en la consola que indica que se está observando el archivo.
-Pila de llamadas:
-
-global function
-Registro de eventos de la API:
-
-ninguna actividad
-Cola de manejadores:
-
-ninguna actividad
-Se lleva a cabo una modificación en el archivo helloworld.txt. El objeto de vigilancia detecta el cambio y agrega un evento change a la cola de manejadores.
-Pila de llamadas:
-
-global function
-Registro de eventos de la API:
-
-change evento agregado a la cola de manej
+- Se inicia el programa con el siguiente comando: ```node test.ts helloworld.txt``, y se añade a la pila de llamadas la función global del archivo.
+- Se comprueba que la longitud del vector de argumentos sea 3, ya que los dos primeros argumentos son el comando de ejecución, es decir ```node```, y el segundo argumento es el nombre del archivo, en este caso ```test.ts```. En nuestro caso el tercer argumento es el nombre de un archivo de texto.
+- En este caso como se ha especificado un archivo, se llama a la función ```access``` pasándole como parámetro el nombre del archivo y la constante ```F_OK```, que indica que se comprueba si el archivo existe. Al llamar a la función ```access``` se añade una nueva entrada a la pila de llamadas.
+- En el caso de error, se muestra por consola el mensaje ```File helloworld.txt does not exist```, y se elimina la entrada de la pila de llamadas.
+- En caso contrario, se muestra por consola el mensaje ```Starting to watch file helloworld.txt```, y se llama a la función ```watch``` pasándole como parámetro el nombre del archivo. Al llamar a la función ```watch``` se añade una nueva entrada a la pila de llamadas.
+- Si modificamos el archivo ```helloworld.txt```, se detecta el cambio y se añade un evento ```change``` a la cola de manejadores, este evento se ejecuta cuando se vacía la pila de llamadas, es decir, cuando se termina de ejecutar el programa.
+- Una vez se ha ejecutado el programa, se muestra por consola el mensaje ```File helloworld.txt is no longer watched```, y se elimina la entrada de la pila de llamadas.
 
 ## Ejercicio 2
 
