@@ -50,9 +50,86 @@ Realizar una traza de ejecución mostrando, paso a paso, el contenido de la pila
 
 ### Traza de Ejecución
 
-```console
+**Pila de Llamadas:** Iniciar el programa: test.ts
 
-```
+**Registro de eventos de la API:** ninguna actividad
+
+**Cola de manejadores:** 
+
+ninguna actividad
+La función global del archivo comprueba si se proporcionó un argumento válido y, en caso contrario, imprime un mensaje de error en la consola y sale del programa. Como el argumento es válido, el código continúa ejecutando.
+Pila de llamadas:
+
+global function
+Registro de eventos de la API:
+
+ninguna actividad
+Cola de manejadores:
+
+ninguna actividad
+La función global del archivo llama a fs.access() para comprobar si el archivo especificado existe. Se agrega una nueva entrada a la pila de llamadas para la llamada a fs.access().
+Pila de llamadas:
+
+fs.access()
+global function
+Registro de eventos de la API:
+
+ninguna actividad
+Cola de manejadores:
+
+ninguna actividad
+La función fs.access() devuelve null en la función de devolución de llamada, lo que indica que el archivo existe. La función de devolución de llamada se ejecuta sin errores. El código continúa ejecutando.
+Después de que se maneje el resultado de fs.access(), la pila de llamadas se deshace de la entrada para fs.access().
+
+Pila de llamadas:
+
+global function
+Registro de eventos de la API:
+
+ninguna actividad
+Cola de manejadores:
+
+ninguna actividad
+La función global del archivo llama a fs.watch() para crear un objeto de vigilancia para el archivo especificado. Se agrega una nueva entrada a la pila de llamadas para la llamada a fs.watch().
+Pila de llamadas:
+
+fs.watch()
+global function
+Registro de eventos de la API:
+
+ninguna actividad
+Cola de manejadores:
+
+ninguna actividad
+La función fs.watch() devuelve un objeto de vigilancia para el archivo especificado. El objeto de vigilancia se usa para detectar cambios en el archivo. La función de devolución de llamada para la detección de cambios se registra con el objeto de vigilancia.
+Después de que se cree el objeto de vigilancia, la pila de llamadas se deshace de la entrada para fs.watch().
+
+Pila de llamadas:
+
+global function
+Registro de eventos de la API:
+
+ninguna actividad
+Cola de manejadores:
+
+ninguna actividad
+Se imprime un mensaje en la consola que indica que se está observando el archivo.
+Pila de llamadas:
+
+global function
+Registro de eventos de la API:
+
+ninguna actividad
+Cola de manejadores:
+
+ninguna actividad
+Se lleva a cabo una modificación en el archivo helloworld.txt. El objeto de vigilancia detecta el cambio y agrega un evento change a la cola de manejadores.
+Pila de llamadas:
+
+global function
+Registro de eventos de la API:
+
+change evento agregado a la cola de manej
 
 ## Ejercicio 2
 
