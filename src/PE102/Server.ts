@@ -6,67 +6,100 @@ import net from 'net'
  */
 export class Server {
   /**
-   * The server that listens for incoming connections.
+   * Port to listen to
+   * @type {number}
+   * @public
+   */
+  public port: number = -1
+  /**
+   * Server instance
    * @type {net.Server}
    * @public
    */
-  public server: net.Server
+  public server: net.Server = new net.Server()
 
   /**
-   * Creates a new server that listens on an specified port.
-   * @param {number} port The port to listen on.
+   * Initializes the server port
+   * @param port Port to listen to
+   * @public
    * @constructor
    */
-  constructor(port: number = 3000) {
-    this.server = net
-      .createServer((connection) => {
-        console.log('Client connected')
-
-        connection.on('data', (data) => {
-          console.log('Received data from client')
-          console.log(data.toString())
-          const file = JSON.parse(data.toString())
-          this.execute(
-            file.command + ' ' + file.arguments.join(' '),
-            connection
-          )
-        })
-        connection.on('close', () => {
-          console.log('Client closed connection')
-        })
-      })
-      .listen(port, () => {
-        console.log('Waiting for client')
-      })
+  public constructor(port?: number) {
+    if (port) this.port = port
   }
 
   /**
-   * Executes a command and sends the result back to the client.
-   * @param {string} command The command to execute.
-   * @param {net.Socket} connection The connection to the client.
+   * Method to listen and handle connections to the server
+   * @param callback Response callback
+   * @public
+   */
+  public listen = (callback: (success: boolean) => void): void => {
+    if (this.port < 0) {
+      console.error('Invalid port')
+      callback(false)
+      return
+    } else {
+      this.server = net
+        .createServer(this.handleConnection)
+        .listen(this.port, () => {
+          console.log('Waiting for client')
+        })
+      this.server.on('close', () => {
+        console.log('Server closed')
+        callback(true)
+      })
+    }
+  }
+
+  /**
+   * Method to handle a connection to the server
+   * @param connection Connection to handle
    * @private
    */
-  public execute(command: string, connection: net.Socket): void {
-    exec(command, (error, stdout, _) => {
-      if (error) {
-        console.error(error)
-        connection.write(error.message)
-      } else {
-        console.log(stdout)
-        connection.write(stdout)
+  private handleConnection = (connection: net.Socket): void => {
+    console.log('Client connected')
+    let output = ''
+    connection.on('data', (data) => {
+      output += data.toString()
+      if (output.includes('\n')) {
+        console.log('Received data from client: ' + output)
+        const file = JSON.parse(output)
+        this.execute(
+          file.command + ' ' + file.arguments.join(' '),
+          connection,
+          (success) => {
+            if (success)
+              console.log('Command executed and result sent to client')
+            else console.error('Error executing or sending result to client')
+            connection.end()
+          }
+        )
       }
     })
   }
 
   /**
-   * Closes the server.
-   * @public
+   * Method to execute a command and send the result to the client
+   * @param command Command to execute
+   * @param connection Connection to send the result to
+   * @param callback Response callback
+   * @private
    */
-  public close(): void {
-    this.server.close(() => {
-      console.log('Server closed')
+  private execute = (
+    command: string,
+    connection: net.Socket,
+    callback: (success: boolean) => void = () => {}
+  ): void => {
+    exec(command, (error, stdout, _) => {
+      if (error) {
+        console.error(error)
+        connection.write(error.message)
+        callback(false)
+      } else {
+        console.log(stdout)
+        connection.write(stdout)
+        callback(true)
+      }
     })
   }
 }
-
-let server = new Server()
