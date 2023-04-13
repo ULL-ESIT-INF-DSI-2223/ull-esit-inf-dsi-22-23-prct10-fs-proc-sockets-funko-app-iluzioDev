@@ -9,19 +9,19 @@ describe('PipeReader class tests', () => {
   it('read should be an instance of PipeReader', () => {
     expect(read).to.be.an.instanceOf(PipeReader)
   })
-  it('read should return 7 lines', () => {
+  it('read should return 8 lines', () => {
     read.lines((l) => {
-      expect(l).to.be.equal(7)
+      expect(l).to.be.equal(8)
     })
   })
-  it('read should return 7 words', () => {
+  it('read should return 8 words', () => {
     read.words((w) => {
-      expect(w).to.be.equal(7)
+      expect(w).to.be.equal(8)
     })
   })
-  it('read should return 78 characters', () => {
+  it('read should return 87 characters', () => {
     read.characters((c) => {
-      expect(c).to.be.equal(78)
+      expect(c).to.be.equal(87)
     })
   })
   it('read should return undefined if there is an error', () => {
@@ -43,19 +43,19 @@ describe('HandlerReader class tests', () => {
   it('read should be an instance of HandlerReader', () => {
     expect(read).to.be.an.instanceOf(HandlerReader)
   })
-  it('read should return 7 lines', () => {
+  it('read should return 8 lines', () => {
     read.lines((l) => {
-      expect(l).to.be.equal(7)
+      expect(l).to.be.equal(8)
     })
   })
-  it('read should return 7 words', () => {
+  it('read should return 8 words', () => {
     read.words((w) => {
-      expect(w).to.be.equal(7)
+      expect(w).to.be.equal(8)
     })
   })
-  it('read should return 78 characters', () => {
+  it('read should return 87 characters', () => {
     read.characters((c) => {
-      expect(c).to.be.equal(78)
+      expect(c).to.be.equal(87)
     })
   })
   it('read should return undefined if there is an error', () => {
