@@ -237,6 +237,396 @@ data/
 
 ## Ejercicio 3 - Cliente y servidor para aplicación de registro de Funko Pops
 
+Implementar al ejercicio de la práctica 9 de la aplicación de registro de Funko Pops, un cliente y un servidor que permitan a los usuarios conectarse a la aplicación desde diferentes dispositivos. El servidor se encargará de procesar todas las peticiones de los clientes y devolverles una respuesta.
+
+### Desarrollo del Ejercicio
+
+Para este ejercicio, se han utilizado las mismas clases `FunkoPop` y `User` con sus respectivas clases padres, tipos y enumerados con modificaciones muy puntuales. Para implementar el cliente/servidor se han creado dos clases adicionales: `Client` y `FunkoApp`.
+
+#### Cliente
+
+Si en la anterior práctica se manejó `yargs` a través de un fichero `main.ts`, ahora nuestra clase Cliente se encargará de manejarlo:
+
+```typescript
+export class Client {
+  public socket = new net.Socket()
+
+  public constructor(
+    public port = -1,
+    public request: RequestType = { type: 'unknown', user: '' }
+  ) {
+    const commands = yargs(hideBin(process.argv))
+      .command('add', 'Adds a funko', FunkoData, (argv) => {
+        if (argv.type && !checkType(argv.type as string)) return
+        if (argv.genre && !checkGenre(argv.genre as string)) return
+        const funko = createFunko(argv)
+        this.request = {
+          user: argv.user as string,
+          type: 'add',
+          funkoPop: funko,
+        }
+      })
+      .command('update', 'Updates a funko', FunkoData, (argv) => {
+        if (argv.type && !checkType(argv.type as string)) return
+        if (argv.genre && !checkGenre(argv.genre as string)) return
+
+        const funko = createFunko(argv)
+        this.request = {
+          user: argv.user as string,
+          type: 'update',
+          funkoPop: funko,
+        }
+      })
+      .command('remove', 'Removes a funko', BasicData, (argv) => {
+        this.request = {
+          user: argv.user as string,
+          type: 'remove',
+          id: argv.id as number,
+        }
+      })
+      .command('list', 'Lists all funkos', UserData, (argv) => {
+        this.request = {
+          user: argv.user as string,
+          type: 'list',
+        }
+      })
+      .command('search', 'Searches for a funko', BasicData, (argv) => {
+        this.request = {
+          user: argv.user as string,
+          type: 'search',
+          id: argv.id as number,
+        }
+      })
+      .help()
+
+    if (process.argv.length > 2) commands.parse()
+    else commands.showHelp()
+
+    if (this.port < 0) console.log(chalk.red('Invalid port'))
+  }
+
+  public connect(
+    request: RequestType,
+    callback: (response: ResponseType) => void
+  ) {
+    this.socket.connect(this.port, 'localhost', () => {
+      console.log(chalk.blue(`Client connected to port ${this.port}`))
+      this.proccessCommand(request, (response) => {
+        if (response) {
+          this.socket.end()
+          callback(response)
+        }
+      })
+    })
+  }
+
+  private proccessCommand(
+    request: RequestType,
+    callback: (response: ResponseType | undefined) => void
+  ) {
+    if (request.type === 'unknown') {
+      console.log(chalk.red('Unknown command'))
+      callback(undefined)
+    }
+    console.log(
+      chalk.blue(`Sending request to server: ${JSON.stringify(request)}`)
+    )
+    this.socket.write(JSON.stringify(request) + '\n')
+    let data = ''
+    this.socket.on('data', (chunk) => {
+      data += chunk.toString()
+    })
+    this.socket.on('end', () => {
+      const response: ResponseType = JSON.parse(data)
+      switch (response.type) {
+        case 'add':
+          if (response.success)
+            console.log(chalk.green('Funko added successfully'))
+          else console.log(chalk.red('Already exists a funko with that ID'))
+          break
+        case 'update':
+          if (response.success)
+            console.log(chalk.green('Funko updated successfully'))
+          else console.log(chalk.red('There is no funko with that ID'))
+          break
+        case 'remove':
+          if (response.success)
+            console.log(chalk.green('Funko removed successfully'))
+          else console.log(chalk.red('There is no funko with that ID'))
+          break
+        case 'list':
+          if (response.success) {
+            if (response.funkoPops === undefined) return
+            response.funkoPops.forEach((funko) => {
+              FunkoPop.print(funko)
+            })
+          } else console.log(chalk.red('There are no funkos'))
+          break
+        case 'search':
+          if (response.success) {
+            if (response.funkoPops === undefined) return
+            FunkoPop.print(response.funkoPops[0])
+          } else console.log(chalk.red('There is no funko with that ID'))
+          break
+        default:
+          console.log(chalk.red('Invalid response'))
+      }
+      callback(response)
+    })
+  }
+}
+```
+
+Básicamente el Cliente se conecta al puerto indicado, y construye la petición a partir de los argumentos pasados por línea de comandos. Una vez construida la petición, se envía al servidor, y se espera a recibir la respuesta. Una vez recibida la respuesta, se muestra por pantalla el resultado de la operación en base a la respuesta recibida.
+
+#### Servidor
+
+```typescript
+export class FunkoApp {
+  public server: net.Server = new net.Server()
+
+  public constructor(public port = -1) {
+    if (this.port >= 0) {
+      this.start()
+    } else {
+      console.log(chalk.red('Invalid port'))
+    }
+  }
+
+  public start(): void {
+    this.server = net
+      .createServer(this.handleConnection)
+      .listen(this.port, () => {
+        console.log(chalk.green(`Server listening on port ${this.port}`))
+      })
+  }
+
+  private handleConnection = (connection: net.Socket): void => {
+    console.log(chalk.yellow('Client connected'))
+    let data = ''
+    connection.on('data', (chunk) => {
+      data += chunk.toString()
+      if (data.includes('\n')) {
+        const request: RequestType = JSON.parse(data)
+        connection.write(JSON.stringify(this.proccessRequest(request)))
+        connection.end()
+        console.log(chalk.yellow('Client disconnected'))
+      }
+    })
+  }
+
+  private proccessRequest = (request: RequestType): ResponseType => {
+    const user = new User(request.user)
+    user.load()
+    let response: ResponseType = { type: 'unknown', success: false }
+    switch (request.type) {
+      case 'add':
+        response = this.processAdd(user, request.funkoPop)
+        break
+      case 'update':
+        response = this.processUpdate(user, request.funkoPop)
+        break
+      case 'remove':
+        response = this.processRemove(user, request.funkoPop)
+        break
+      case 'search':
+        response = this.processSearch(user, request.funkoPop)
+        break
+      case 'list':
+        response = this.processList(user)
+        break
+    }
+    user.save()
+    return response
+  }
+
+  private processAdd = (
+    user: User,
+    funkoPop: FunkoPop | undefined
+  ): ResponseType => {
+    if (funkoPop)
+      return user.addFunko(funkoPop).includes('Already exists')
+        ? { type: 'add', success: false }
+        : { type: 'add', success: true }
+    return { type: 'add', success: false }
+  }
+
+  private processUpdate = (
+    user: User,
+    funkoPop: FunkoPop | undefined
+  ): ResponseType => {
+    if (funkoPop)
+      return user
+        .updateFunko(funkoPop)
+        .includes(`not in ${user.name}'s collection`)
+        ? { type: 'update', success: false }
+        : { type: 'update', success: true }
+    return { type: 'update', success: false }
+  }
+
+  private processRemove = (
+    user: User,
+    funkoPop: FunkoPop | undefined
+  ): ResponseType => {
+    if (funkoPop)
+      return user
+        .removeFunko(funkoPop.id)
+        .includes(`not in ${user.name}'s collection`)
+        ? { type: 'remove', success: false }
+        : { type: 'remove', success: true }
+    return { type: 'remove', success: false }
+  }
+
+  private processSearch = (
+    user: User,
+    funkoPop: FunkoPop | undefined
+  ): ResponseType => {
+    if (funkoPop)
+      return user
+        .searchFunko(funkoPop.id)
+        .includes(`not in ${user.name}'s collection`)
+        ? { type: 'search', success: false }
+        : { type: 'search', success: true, funkoPops: [funkoPop] }
+    return { type: 'search', success: false }
+  }
+
+  private processList = (user: User): ResponseType => {
+    if (user.collection.length === 0) return { type: 'list', success: false }
+    return { type: 'list', success: true, funkoPops: user.collection }
+  }
+
+  public stop(): void {
+    this.server.close()
+  }
+}
+```
+
+El servidor se encarga de procesar toda la información, haciendo uso de la clase `User`, crea y modifica las carpetas de los usuarios existentes, y cada vez que recibe una conexión, la gestiona con el método `handleConnection`. Este método se encarga de recibir la petición del cliente, procesarla con el método `proccessRequest`, y devolver una respuesta al cliente.
+
+¿Cómo sabe el servidor cuando ha recibido la petición completa? Pues se ha puesto como carácter de fin de petición el salto de línea, por lo que cuando se recibe un salto de línea, se sabe que la petición ha terminado, y se puede procesar para devolver la respuesta.
+
+Así, si ejecutamos el servidor e intentamos conectarnos con el cliente veremos salidas por pantalla como las siguientes:
+
+##### 1º Intento
+
+**Servidor**
+
+```console
+node dist/Ejercicio-03-FunkoApp/FunkoApp/FunkoApp.js
+Server listening on port 8080
+```
+
+**Cliente**
+
+```console
+node dist/Ejercicio-03-FunkoApp/FunkoApp/Client.js
+Client.js [command]
+
+Commands:
+  Client.js add     Adds a funko
+  Client.js update  Updates a funko
+  Client.js remove  Removes a funko
+  Client.js list    Lists all funkos
+  Client.js search  Searches for a funko
+
+Options:
+  --version  Show version number                                       [boolean]
+  --help     Show help                                                 [boolean]
+Client connected to port 8080
+Unknown command
+Client disconnected
+```
+
+**Servidor**
+
+```console
+Client connected
+Client disconnected
+```
+
+##### 2º Intento
+
+**Servidor**
+
+```console
+node dist/Ejercicio-03-FunkoApp/FunkoApp/FunkoApp.js
+Server listening on port 8080
+```
+
+**Cliente**
+
+```console
+node dist/Ejercicio-03-FunkoApp/FunkoApp/Client.js list --user "Iluzio"
+Client connected to port 8080
+Sending request to server: {"user":"Iluzio","type":"list"}
+There are no funkos
+Client disconnected
+```
+
+```console
+node dist/Ejercicio-03-FunkoApp/FunkoApp/Client.js add --user "Iluzio" --id 0 --name "All Might" --desc "Nº 1 Hero" --type "Pop!" --genre "Anime" --brand "My Hero Academia" --brandId 0 --price 40
+Client connected to port 8080
+Sending request to server: {"user":"Iluzio","type":"add","funkoPop":{"id":0,"name":"All Might","description":"Nº 1 Hero","type":"Pop!","genre":"Anime","brand":"My Hero Academia","brandId":0,"marketPrice":40,"exclusive":false,"especial":""}}
+Funko added successfully
+Client disconnected
+```
+
+```console
+node dist/Ejercicio-03-FunkoApp/FunkoApp/Client.js list --user "Iluzio"
+Client connected to port 8080
+Sending request to server: {"user":"Iluzio","type":"list"}
+┌─────────────┬────────────────────┐
+│   (index)   │       Values       │
+├─────────────┼────────────────────┤
+│     id      │         0          │
+│    name     │    'All Might'     │
+│ description │    'Nº 1 Hero'     │
+│    type     │       'Pop!'       │
+│    genre    │      'Anime'       │
+│    brand    │ 'My Hero Academia' │
+│   brandId   │         0          │
+│  exclusive  │       false        │
+│  especial   │         ''         │
+└─────────────┴────────────────────┘
+Market Price: $40
+Client disconnected
+```
+
+```console
+Client connected
+Client disconnected
+Client connected
+Client disconnected
+Client connected
+Client disconnected
+Client connected
+Client disconnected
+```
+
+#### Peticiones y respuestas
+
+Cabe destacar que el sistema de peticiones y respuestas funciona gracias a los siguientes tipos:
+
+- `RequestType`: Tipo que define la estructura de una petición. Se compone de un usuario, un tipo de operación, un objeto `FunkoPop` y un identificador de `FunkoPop`, tanto el objeto como el identificador son opcionales, ya que no todos los tipos de operación necesitan de ellos (por ejemplo `list` no los requiere).
+- `ResponseType`: Tipo que define la estructura de una respuesta. Se compone de un tipo de operación, un booleano que indica si la operación se ha realizado con éxito o no, y un array de objetos `FunkoPop`, este array es opcional, ya que no todas las operaciones devuelven un array de objetos `FunkoPop` (por ejemplo `add` no lo devuelve).
+
+```typescript
+export type RequestType = {
+  user: string
+  type: Operation
+  funkoPop?: FunkoPop
+  id?: number
+}
+
+export type ResponseType = {
+  type: Operation
+  success: boolean
+  funkoPops?: FunkoPop[]
+}
+```
+
+Y con esto habríamos terminado el ejercicio.
+
 ## PE120
 
 Desarrollar un cliente y un servidor en Node.js, haciendo uso de sockets, que incorporen la siguiente funcionalidad:
@@ -378,3 +768,7 @@ export class Server {
 ```
 
 En este caso se ha optado por indicarle al servidor cuándo ha terminado la transimisión del comando por parte del cliente a través de un salto de línea. Esto se hace para que el servidor pueda recibir el comando completo y no se quede esperando, una vez ocurre esto, el servidor ejecuta el comando y envía la respuesta al cliente.
+
+## Conclusiones
+
+En esta práctica se ha podido comprobar que el uso de sockets es una herramienta muy útil para la comunicación entre procesos, ya que permite que estos puedan comunicarse de forma continua y así poder realizar tareas que requieran de una comunicación constante. A su vez, hemos aprendido que hay que tener mucho cuidado con la sincronización de los procesos, ya que si no se hace de forma correcta puede provocar que los procesos se queden bloqueados o que se produzcan errores en la comunicación.

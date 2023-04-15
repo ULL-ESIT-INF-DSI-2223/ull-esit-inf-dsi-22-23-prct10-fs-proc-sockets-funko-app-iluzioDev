@@ -37,7 +37,6 @@ export class Server {
     if (this.port < 0) {
       console.error('Invalid port')
       callback(false)
-      return
     } else {
       this.server = net
         .createServer(this.handleConnection)
