@@ -55,13 +55,13 @@ Es una constante del paquete `fs` que determina si el fichero es accesible para 
 
 ### Ejecución
 
-- Se inicia el programa con el siguiente comando: ```node test.ts helloworld.txt``, y se añade a la pila de llamadas la función global del archivo.
-- Se comprueba que la longitud del vector de argumentos sea 3, ya que los dos primeros argumentos son el comando de ejecución, es decir ```node```, y el segundo argumento es el nombre del archivo, en este caso ```test.ts```. En nuestro caso el tercer argumento es el nombre de un archivo de texto.
-- En este caso como se ha especificado un archivo, se llama a la función ```access``` pasándole como parámetro el nombre del archivo y la constante ```F_OK```, que indica que se comprueba si el archivo existe. Al llamar a la función ```access``` se añade una nueva entrada a la pila de llamadas.
-- En el caso de error, se muestra por consola el mensaje ```File helloworld.txt does not exist```, y se elimina la entrada de la pila de llamadas.
-- En caso contrario, se muestra por consola el mensaje ```Starting to watch file helloworld.txt```, y se llama a la función ```watch``` pasándole como parámetro el nombre del archivo. Al llamar a la función ```watch``` se añade una nueva entrada a la pila de llamadas.
-- Si modificamos el archivo ```helloworld.txt```, se detecta el cambio y se añade un evento ```change``` a la cola de manejadores, este evento se ejecuta cuando se vacía la pila de llamadas, es decir, cuando se termina de ejecutar el programa.
-- Una vez se ha ejecutado el programa, se muestra por consola el mensaje ```File helloworld.txt is no longer watched```, y se elimina la entrada de la pila de llamadas.
+- Se inicia el programa con el siguiente comando: ``node test.ts helloworld.txt`, y se añade a la pila de llamadas la función global del archivo.
+- Se comprueba que la longitud del vector de argumentos sea 3, ya que los dos primeros argumentos son el comando de ejecución, es decir `node`, y el segundo argumento es el nombre del archivo, en este caso `test.ts`. En nuestro caso el tercer argumento es el nombre de un archivo de texto.
+- En este caso como se ha especificado un archivo, se llama a la función `access` pasándole como parámetro el nombre del archivo y la constante `F_OK`, que indica que se comprueba si el archivo existe. Al llamar a la función `access` se añade una nueva entrada a la pila de llamadas.
+- En el caso de error, se muestra por consola el mensaje `File helloworld.txt does not exist`, y se elimina la entrada de la pila de llamadas.
+- En caso contrario, se muestra por consola el mensaje `Starting to watch file helloworld.txt`, y se llama a la función `watch` pasándole como parámetro el nombre del archivo. Al llamar a la función `watch` se añade una nueva entrada a la pila de llamadas.
+- Si modificamos el archivo `helloworld.txt`, se detecta el cambio y se añade un evento `change` a la cola de manejadores, este evento se ejecuta cuando se vacía la pila de llamadas, es decir, cuando se termina de ejecutar el programa.
+- Una vez se ha ejecutado el programa, se muestra por consola el mensaje `File helloworld.txt is no longer watched`, y se elimina la entrada de la pila de llamadas.
 
 ## Ejercicio 2
 

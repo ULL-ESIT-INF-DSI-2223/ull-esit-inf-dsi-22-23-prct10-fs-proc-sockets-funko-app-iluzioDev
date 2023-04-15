@@ -31,10 +31,10 @@ export interface FunkoPopInfo {
    */
   exclusive: boolean
   /**
-   * Array of special features of the Funko Pop.
-   * @type {string[]}
+   * Special feature of the Funko Pop.
+   * @type {string}
    */
-  especial: string[]
+  especial: string
 }
 
 /**
@@ -42,20 +42,6 @@ export interface FunkoPopInfo {
  * @see https://funko.com
  */
 export class FunkoPop extends BasicFunkoPop implements FunkoPopInfo {
-  /**
-   * Indicates if the Funko Pop is exclusive or not.
-   * @public
-   * @type {boolean}
-   */
-  public exclusive = false
-
-  /**
-   * Array of special features of the Funko Pop.
-   * @public
-   * @type {string[]}
-   */
-  public especial: string[] = []
-
   /**
    * Initializes a new instance of the FunkoPop class.
    * @param name Name of the Funko Pop.
@@ -85,7 +71,9 @@ export class FunkoPop extends BasicFunkoPop implements FunkoPopInfo {
     genre: FunkoGenre,
     public brand = '',
     public brandId = 0,
-    public marketPrice = 0
+    public marketPrice = 0,
+    public exclusive = false,
+    public especial: string = ''
   ) {
     super(id, name, description, type, genre)
   }

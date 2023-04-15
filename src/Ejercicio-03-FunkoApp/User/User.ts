@@ -153,23 +153,6 @@ export class User implements UserInfo {
   }
 
   /**
-   * Method that prints the collection of Funko Pops of the User.
-   * @returns {void}
-   * @example
-   * ```typescript
-   * const funkoPop = new FunkoPop(0, 'Funko Pop 1', 'Description 1', 'Type 1', 'Genre 1', 'Brand 1', 0)
-   * const funkoPop2 = new FunkoPop(1, 'Funko Pop 2', 'Description 2', 'Type 2', 'Genre 2', 'Brand 2', 1)
-   * const user = new User('User 1', funkoPop, funkoPop2)
-   * user.listFunkos()
-   * ```
-   */
-  /* c8 ignore start */
-  public listFunkos(): void {
-    this.collection.forEach((funkoPop) => FunkoPop.print(funkoPop))
-  }
-  /* c8 ignore stop */
-
-  /**
    * Method that searches a Funko Pop in the User's collection.
    * @param id ID of the Funko Pop to search in the User's collection.
    * @returns Message that indicates if the Funko Pop was found in the User's collection or not.
@@ -196,6 +179,23 @@ export class User implements UserInfo {
   }
 
   /**
+   * Method that prints the collection of Funko Pops of the User.
+   * @returns {void}
+   * @example
+   * ```typescript
+   * const funkoPop = new FunkoPop(0, 'Funko Pop 1', 'Description 1', 'Type 1', 'Genre 1', 'Brand 1', 0)
+   * const funkoPop2 = new FunkoPop(1, 'Funko Pop 2', 'Description 2', 'Type 2', 'Genre 2', 'Brand 2', 1)
+   * const user = new User('User 1', funkoPop, funkoPop2)
+   * user.listFunkos()
+   * ```
+   */
+  /* c8 ignore start */
+  public listFunkos(): void {
+    this.collection.forEach((funkoPop) => FunkoPop.print(funkoPop))
+  }
+  /* c8 ignore stop */
+
+  /**
    * Method that loads the User's collection from JSON files inside the user folder.
    * @returns {void}
    */
@@ -220,7 +220,10 @@ export class User implements UserInfo {
               funkoPop.type,
               funkoPop.genre,
               funkoPop.brand,
-              funkoPop.price
+              funkoPop.brandId,
+              funkoPop.marketPrice,
+              funkoPop.exclusive,
+              funkoPop.especial
             )
           )
         }

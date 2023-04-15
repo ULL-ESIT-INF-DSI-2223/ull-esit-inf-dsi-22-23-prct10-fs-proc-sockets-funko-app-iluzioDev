@@ -10,7 +10,7 @@ export class Server {
    * @type {number}
    * @public
    */
-  public port: number = -1
+  public port = -1
   /**
    * Server instance
    * @type {net.Server}

@@ -40,14 +40,25 @@
 <p>Realizar una traza de ejecución mostrando, paso a paso, el contenido de la pila de llamadas, el registro de eventos de la API y la cola de manejadores, además de lo que se muestra por la consola.</p>
 <ul>
 <li>¿Qué hace la función <code>access</code>?</li>
+</ul>
+<p>Consiste en una función asíncrona que comprueba los permisos de acceso a un archivo o directorio. En este caso se comprueba si el archivo existe.</p>
+<ul>
 <li>¿Para qué sirve el objeto <code>constants</code>?</li>
 </ul>
+<p>Es una constante del paquete <code>fs</code> que determina si el fichero es accesible para lectura, escritura o ejecución, es decir, si el fichero existe.</p>
 
-<a href="#traza-de-ejecución" id="traza-de-ejecución" style="color: inherit; text-decoration: none;">
-  <h3>Traza de Ejecución</h3>
+<a href="#ejecución" id="ejecución" style="color: inherit; text-decoration: none;">
+  <h3>Ejecución</h3>
 </a>
-<pre><code class="language-console">
-</code></pre>
+<ul>
+<li>Se inicia el programa con el siguiente comando: ``node test.ts helloworld.txt`, y se añade a la pila de llamadas la función global del archivo.</li>
+<li>Se comprueba que la longitud del vector de argumentos sea 3, ya que los dos primeros argumentos son el comando de ejecución, es decir <code>node</code>, y el segundo argumento es el nombre del archivo, en este caso <code>test.ts</code>. En nuestro caso el tercer argumento es el nombre de un archivo de texto.</li>
+<li>En este caso como se ha especificado un archivo, se llama a la función <code>access</code> pasándole como parámetro el nombre del archivo y la constante <code>F_OK</code>, que indica que se comprueba si el archivo existe. Al llamar a la función <code>access</code> se añade una nueva entrada a la pila de llamadas.</li>
+<li>En el caso de error, se muestra por consola el mensaje <code>File helloworld.txt does not exist</code>, y se elimina la entrada de la pila de llamadas.</li>
+<li>En caso contrario, se muestra por consola el mensaje <code>Starting to watch file helloworld.txt</code>, y se llama a la función <code>watch</code> pasándole como parámetro el nombre del archivo. Al llamar a la función <code>watch</code> se añade una nueva entrada a la pila de llamadas.</li>
+<li>Si modificamos el archivo <code>helloworld.txt</code>, se detecta el cambio y se añade un evento <code>change</code> a la cola de manejadores, este evento se ejecuta cuando se vacía la pila de llamadas, es decir, cuando se termina de ejecutar el programa.</li>
+<li>Una vez se ha ejecutado el programa, se muestra por consola el mensaje <code>File helloworld.txt is no longer watched</code>, y se elimina la entrada de la pila de llamadas.</li>
+</ul>
 
 <a href="#ejercicio-2" id="ejercicio-2" style="color: inherit; text-decoration: none;">
   <h2>Ejercicio 2</h2>
@@ -149,8 +160,10 @@
 <li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_FunkoGenre.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Genre</a></li>
 <li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_FunkoPop.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Pop</a></li>
 <li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_Funko_FunkoType.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko/<wbr/>Funko<wbr/>Type</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_FunkoApp_Client.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko<wbr/>App/<wbr/>Client</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_FunkoApp_FunkoApp.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko<wbr/>App/<wbr/>Funko<wbr/>App</a></li>
+<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_FunkoApp_Helpers.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>Funko<wbr/>App/<wbr/>Helpers</a></li>
 <li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_User_User.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/<wbr/>User/<wbr/>User</a></li>
-<li class="tsd-kind-module"><a href="modules/Ejercicio_03_FunkoApp_main.html">Ejercicio-<wbr/>03-<wbr/>Funko<wbr/>App/main</a></li>
 <li class="tsd-kind-module"><a href="modules/PE102_Client.html">PE102/<wbr/>Client</a></li>
 <li class="tsd-kind-module"><a href="modules/PE102_Server.html">PE102/<wbr/>Server</a></li></ul></li></ul></div></details></nav></div></div>
 <div class="container tsd-generator">

@@ -4,8 +4,8 @@ import { expect } from 'chai'
 import { Client } from '../../src/PE102/Client.js'
 import { Server } from '../../src/PE102/Server.js'
 
-let web_server: Server = new Server(3000)
-let client: Client = new Client(3000)
+const web_server: Server = new Server(3000)
+const client: Client = new Client(3000)
 
 describe('Server class tests', () => {
   it('Web Server should be an instance of Server class', () => {

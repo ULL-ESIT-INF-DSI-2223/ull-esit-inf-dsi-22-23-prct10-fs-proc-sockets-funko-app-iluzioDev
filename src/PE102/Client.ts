@@ -10,7 +10,7 @@ export class Client {
    * @type {number}
    * @public
    */
-  public port: number = -1
+  public port = -1
   /**
    * Socket to connect to the server
    * @type {net.Socket}
