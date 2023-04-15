@@ -7,8 +7,8 @@ import {
 } from '../../src/Ejercicio-03-FunkoApp/FunkoApp/FunkoApp.js'
 import { Client } from '../../src/Ejercicio-03-FunkoApp/FunkoApp/Client.js'
 
-const funkoApp: FunkoApp = new FunkoApp(4000)
-const client: Client = new Client(4000)
+const funkoApp: FunkoApp = new FunkoApp(3001)
+const client: Client = new Client(3001)
 
 describe('FunkoApp class tests', () => {
   it('FunkoApp should be an instance of FunkoApp class', () => {
