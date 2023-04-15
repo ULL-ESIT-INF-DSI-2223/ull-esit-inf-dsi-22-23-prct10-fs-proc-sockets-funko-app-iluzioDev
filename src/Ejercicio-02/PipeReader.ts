@@ -35,7 +35,7 @@ export class PipeReader extends BasicReader {
       callback(undefined)
       return
     }
-    const wc = spawn('wc', ['-l', this.path])
+    const wc = spawn('/usr/bin/wc', ['-l', this.path])
     // wc.stdout.pipe(process.stdout)
     let output = ''
     wc.stdout.on('data', (chunk) => {
@@ -67,7 +67,7 @@ export class PipeReader extends BasicReader {
       callback(undefined)
       return
     }
-    const wc = spawn('wc', ['-w', this.path])
+    const wc = spawn('/usr/bin/wc', ['-w', this.path])
     // wc.stdout.pipe(process.stdout)
     let output = ''
     wc.stdout.on('data', (chunk) => {
@@ -99,7 +99,7 @@ export class PipeReader extends BasicReader {
       callback(undefined)
       return
     }
-    const wc = spawn('wc', ['-m', this.path])
+    const wc = spawn('/usr/bin/wc', ['-m', this.path])
     // wc.stdout.pipe(process.stdout)
     let output = ''
     wc.stdout.on('data', (chunk) => {
