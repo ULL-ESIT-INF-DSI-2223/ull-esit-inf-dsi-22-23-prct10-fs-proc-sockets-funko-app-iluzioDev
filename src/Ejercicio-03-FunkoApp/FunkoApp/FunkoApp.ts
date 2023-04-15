@@ -118,7 +118,6 @@ export class FunkoApp {
     connection.on('data', (chunk) => {
       data += chunk.toString()
       if (data.includes('\n')) {
-        connection.resume()
         const request: RequestType = JSON.parse(data)
         connection.write(JSON.stringify(this.proccessRequest(request)))
         connection.end()
@@ -248,6 +247,7 @@ export class FunkoApp {
 
   /**
    * Method to stop the server
+   * @public
    */
   public stop(): void {
     this.server.close()

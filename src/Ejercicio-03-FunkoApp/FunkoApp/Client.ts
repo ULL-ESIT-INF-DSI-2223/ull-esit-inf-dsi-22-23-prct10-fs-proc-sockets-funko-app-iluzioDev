@@ -109,17 +109,16 @@ export class Client {
    * @public
    * @constructor
    */
-  public constructor(public port = -1) {
-    let request: RequestType = {
-      user: '',
-      type: 'unknown',
-    }
+  public constructor(
+    public port = -1,
+    public request: RequestType = { type: 'unknown', user: '' }
+  ) {
     const commands = yargs(hideBin(process.argv))
       .command('add', 'Adds a funko', FunkoData, (argv) => {
         if (argv.type && !checkType(argv.type as string)) return
         if (argv.genre && !checkGenre(argv.genre as string)) return
         const funko = createFunko(argv)
-        request = {
+        this.request = {
           user: argv.user as string,
           type: 'add',
           funkoPop: funko,
@@ -130,27 +129,27 @@ export class Client {
         if (argv.genre && !checkGenre(argv.genre as string)) return
 
         const funko = createFunko(argv)
-        request = {
+        this.request = {
           user: argv.user as string,
           type: 'update',
           funkoPop: funko,
         }
       })
       .command('remove', 'Removes a funko', BasicData, (argv) => {
-        request = {
+        this.request = {
           user: argv.user as string,
           type: 'remove',
           id: argv.id as number,
         }
       })
       .command('list', 'Lists all funkos', UserData, (argv) => {
-        request = {
+        this.request = {
           user: argv.user as string,
           type: 'list',
         }
       })
       .command('search', 'Searches for a funko', BasicData, (argv) => {
-        request = {
+        this.request = {
           user: argv.user as string,
           type: 'search',
           id: argv.id as number,
@@ -168,52 +167,60 @@ export class Client {
    * Method to connect to the server
    * @public
    */
-  public connect(request: RequestType) {
+  public connect(
+    request: RequestType,
+    callback: (response: ResponseType) => void
+  ) {
     this.socket.connect(this.port, 'localhost', () => {
       console.log(chalk.blue(`Client connected to port ${this.port}`))
-      this.proccessCommand(request, (message) => {
-        if (message) console.log(message)
-        this.socket.end()
-        return message
+      this.proccessCommand(request, (response) => {
+        if (response) {
+          this.socket.end()
+          callback(response)
+        }
       })
     })
   }
 
+  /**
+   * Method to process the command
+   * @param request Request to send to the server
+   * @param callback Response callback
+   * @private
+   */
   private proccessCommand(
     request: RequestType,
-    callback: (message: string | undefined) => void
+    callback: (response: ResponseType | undefined) => void
   ) {
     if (request.type === 'unknown') {
-      callback(chalk.red('Unknown command'))
-      return
+      console.log(chalk.red('Unknown command'))
+      callback(undefined)
     }
     console.log(
       chalk.blue(`Sending request to server: ${JSON.stringify(request)}`)
     )
     this.socket.write(JSON.stringify(request) + '\n')
-    this.socket.emit('pause')
     let data = ''
     this.socket.on('data', (chunk) => {
       data += chunk.toString()
     })
     this.socket.on('end', () => {
       const response: ResponseType = JSON.parse(data)
-      let message = ''
       switch (response.type) {
         case 'add':
           if (response.success)
-            message = chalk.green('Funko added successfully')
-          else message = chalk.red('Already exists a funko with that ID')
+            console.log(chalk.green('Funko added successfully'))
+          else console.log(chalk.red('Already exists a funko with that ID'))
           break
         case 'update':
           if (response.success)
-            message = chalk.green('Funko updated successfully')
-          else message = chalk.red('There is no funko with that ID')
+            console.log(chalk.green('Funko updated successfully'))
+          else console.log(chalk.red('There is no funko with that ID'))
           break
         case 'remove':
           if (response.success)
-            message = chalk.green('Funko removed successfully')
-          else message = chalk.red('There is no funko with that ID')
+            console.log(chalk.green('Funko removed successfully'))
+          else console.log(chalk.red('There is no funko with that ID'))
           break
         case 'list':
           if (response.success) {
@@ -221,18 +228,18 @@ export class Client {
             response.funkoPops.forEach((funko) => {
               FunkoPop.print(funko)
             })
-          } else message = chalk.red('There are no funkos')
+          } else console.log(chalk.red('There are no funkos'))
           break
         case 'search':
           if (response.success) {
             if (response.funkoPops === undefined) return
             FunkoPop.print(response.funkoPops[0])
-          } else message = chalk.red('There is no funko with that ID')
+          } else console.log(chalk.red('There is no funko with that ID'))
           break
         default:
-          message = chalk.red('Invalid response')
+          console.log(chalk.red('Invalid response'))
       }
-      callback(message)
+      callback(response)
     })
   }
 }

@@ -8,8 +8,8 @@ import {
 import { Client } from '../../src/Ejercicio-03-FunkoApp/FunkoApp/Client.js'
 
 describe('Funko App Tests', () => {
-  const funkoApp: FunkoApp = new FunkoApp(3000)
-  const client: Client = new Client(3000)
+  const funkoApp: FunkoApp = new FunkoApp(4000)
+  const client: Client = new Client(4000)
   describe('FunkoApp class tests', () => {
     it('FunkoApp should be an instance of FunkoApp class', () => {
       expect(funkoApp).to.be.an.instanceof(FunkoApp)
@@ -39,8 +39,11 @@ describe('Funko App Tests', () => {
         user: 'Iluzio',
         type: 'list',
       }
-      expect(client.connect(request)).to.be.undefined
-      funkoApp.server.close()
+      client.connect(request, (response) => {
+        expect(response.type).to.be.equal('list')
+        expect(response.success).to.be.false
+        funkoApp.stop()
+      })
     })
   })
 })
