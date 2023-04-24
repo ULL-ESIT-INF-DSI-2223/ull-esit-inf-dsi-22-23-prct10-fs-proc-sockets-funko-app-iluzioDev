@@ -111,7 +111,7 @@ export class Client {
    */
   public constructor(
     public port = -1,
-    public request: RequestType = { type: 'unknown', user: '' }
+    public request: RequestType = { type: 'unknown', user: '' },
   ) {
     const commands = yargs(hideBin(process.argv))
       .command('add', 'Adds a funko', FunkoData, (argv) => {
@@ -161,6 +161,7 @@ export class Client {
     else commands.showHelp()
 
     if (this.port < 0) console.log(chalk.red('Invalid port'))
+    else if (this.port != 4000) this.connect(this.request, ((response) => {}))
   }
 
   /**
@@ -243,3 +244,4 @@ export class Client {
     })
   }
 }
+new Client(3030)

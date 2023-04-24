@@ -253,3 +253,4 @@ export class FunkoApp {
     this.server.close()
   }
 }
+new FunkoApp(3030)
